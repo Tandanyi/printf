@@ -8,13 +8,14 @@
 
 int _printf(const char *format, ...)
 {
-	va_list arg1;
+	/*arg1 - char, arg2 - string, arg3 - int*/
+	va_list arg1, arg2;
 
 	int i;
 	char *s = NULL;
-	char arg; /*for adding characters after replacing with an argument*/
+	char *arg; /*for adding characters after replacing with an argument*/
 
-	arg = va_arg(arg1, int);
+	arg = va_arg(arg1, char *);
 	if (*format == '\0')
 		return (-1);
 
@@ -22,37 +23,53 @@ int _printf(const char *format, ...)
 
 		for (i = 0; format[i] != '\0'; i++)
 		{
+				/*checks for percentange*/
 			if (format[i] == '%' && format[i + 1] == ' ')
 			{
 				continue;
 			}
 			else if (format[i] == '%' && format[i + 1] == 'c')
 			{
-				*s = add_char(format, 'c', arg);
+				*s = *add_char(format, "c", arg);
 			}
 		}
-	va_end(arg1), return (0);
+	va_end(arg1);
+
+	va_start(arg2,format);
+	va_copy(arg2,arg1);
+	
+	arg = va_arg(arg2, char *);
+		 if (format[i] == '%' && format[i + 1] == 's')
+		 {
+			 *s = *add_char(format, "s", arg);
+		 }
+	va_end(arg2);
+	return (0);
+	
 }
 
-char *add_char(char *c, char *specifier, char *arg)
+char *add_char(const char *c,char *specifier, char *arg)
 {
 	int i;
 	char *s = '\0';
 
-	char *newstring = malloc(sizeof(format) + sizeof(arg1) - 2);
+	char *newstring = malloc(sizeof(c) + sizeof(arg) - 2);
 	/*allocate size where the string will be saved*/
 
-	*newstring = *format;
+	*newstring = *c;
 	/*put format to newstring to allow being edited*/
 
-	for (i = 0; format[i] != '\0'; i++)
+	for (i = 0; c[i] != '\0'; i++)
 	/*check if string has format again to change*/
 	{
-		if (format[i] == '%' && format[i + 1] == 'c')/*replaces format with variable*/
-		{       
-			*s = *newstring;
-			newstring[i] = arg;
+		if (c[i] == '%' && c[i + 1] == *specifier)/*replaces format with variable*/
+		{
+			for(; *arg != '\0'; *arg++)
+			{
+				*s = *newstring;
+				newstring[i] = *arg;
 
+			}
 			while (newstring[i + 1] != '\0')
 			{
 				newstring [i + 1] = s[i];
