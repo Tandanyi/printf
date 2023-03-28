@@ -1,64 +1,63 @@
 #include "main.h"
-#include <stdlib.h>
+
+void print_buffer(char buffer[], int *buff_ind);
 
 /**
- * _printf - function that prints anything
- * @format: string literal
+ * _printf - print function
+ * @format: format
+ * Return: print chars
  */
 
 int _printf(const char *format, ...)
 {
-	va_list arg1;
+	int i, printed = 0, printed_chars = 0;
+	int flags, width, precision, size, buff_ind = 0;
+	va_list list;
+	char buffer[BUFF_SIZE];
 
-	int i;
-	char *s = NULL;
-	char arg; /*for adding characters after replacing with an argument*/
-
-	arg = va_arg(arg1, int);
-	if (*format == '\0')
+	if (format == NULL)
 		return (-1);
 
-	va_start(arg1, format); /*checks for c*/
+	va_start(list, format);
 
-		for (i = 0; format[i] != '\0'; i++)
-		{
-			if (format[i] == '%' && format[i + 1] == ' ')
-			{
-				continue;
-			}
-			else if (format[i] == '%' && format[i + 1] == 'c')
-			{
-				*s = add_char(format, 'c', arg);
-			}
-		}
-	va_end(arg1), return (0);
-}
-
-char *add_char(char *c, char *specifier, char *arg)
-{
-	int i;
-	char *s = '\0';
-
-	char *newstring = malloc(sizeof(format) + sizeof(arg1) - 2);
-	/*allocate size where the string will be saved*/
-
-	*newstring = *format;
-	/*put format to newstring to allow being edited*/
-
-	for (i = 0; format[i] != '\0'; i++)
-	/*check if string has format again to change*/
+	for (i = 0; format && format[i] != '\0'; i++)
 	{
-		if (format[i] == '%' && format[i + 1] == 'c')/*replaces format with variable*/
-		{       
-			*s = *newstring;
-			newstring[i] = arg;
-
-			while (newstring[i + 1] != '\0')
-			{
-				newstring [i + 1] = s[i];
-				i++;
-			}
+		if (format[i] != '%')
+		{
+			buffer[buff_ind++] = format[i];
+			if (buff_ind == BUFF_SIZE)
+				printf_buffer(buffer, &buff_ind);
+			/* write(1, &format[i], 1);*/
+			printed_chars++;
+		}
+		else
+		{
+			print_buffer(buffer, &buff_ind);
+			glags = get_flags(format, &i);
+			width = get_width(format, &i, list);
+			precision = get_precision(format, &i, list);
+			size = get_size(format, &i);
+			++i;
+			printed = handle_print(format, &i, list, buffer, flags,
+					width, precision, size);
+			if (printed == -1)
+				return (-1);
+			printed_chars += printed;
 		}
 	}
-	return (newstring);
+	print_buffer(buffer, &buff_ind);
+	va_end(list);
+	return (printed_chars);
+}
+
+/**
+ * print_buffer - prints the content of the buffer if it exist
+ * @buffler: Array of chars
+ * @buff_ind: index
+ */
+void print buffer(char buffer[], int buff_ind)
+{
+	if (buff_ind > 0)
+		write(1, &buffer[1], *buffer_ind);
+	*buff_ind = 0;
 }
