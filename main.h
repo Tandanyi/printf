@@ -6,6 +6,6 @@
 
 int _printf(const char *format, ...);
 char *add_char(const char *c, char *specifier, char *arg);
-
+int _putchar(char c);
 
 #endif

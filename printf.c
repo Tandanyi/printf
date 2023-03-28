@@ -44,13 +44,17 @@ int _printf(const char *format, ...)
 			 *s = *add_char(format, "s", arg);
 		 }
 	va_end(arg2);
+	for (i=0; s[i] != '\0'; i++)
+	{
+		_putchar(*s);
+	}
 	return (0);
 	
 }
 
 char *add_char(const char *c,char *specifier, char *arg)
 {
-	int i;
+	int i, j;
 	char *s = '\0';
 
 	char *newstring = malloc(sizeof(c) + sizeof(arg) - 2);
@@ -64,7 +68,7 @@ char *add_char(const char *c,char *specifier, char *arg)
 	{
 		if (c[i] == '%' && c[i + 1] == *specifier)/*replaces format with variable*/
 		{
-			for(; *arg != '\0'; *arg++)
+			for(j = 0; arg[j] != '\0'; j++)
 			{
 				*s = *newstring;
 				newstring[i] = *arg;
