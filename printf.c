@@ -46,7 +46,7 @@ int _printf(const char *format, ...)
 	va_end(arg2);
 	for (i=0; s[i] != '\0'; i++)
 	{
-		_putchar(*s);
+		_putchar(*s + '\0');
 	}
 	return (0);
 	
@@ -55,11 +55,16 @@ int _printf(const char *format, ...)
 char *add_char(const char *c,char *specifier, char *arg)
 {
 	int i, j;
-	char *s = '\0';
+	char *s = NULL;
 
-	char *newstring = malloc(sizeof(c) + sizeof(arg) - 2);
+	char *newstring;
+
+	newstring = malloc(sizeof(c) + sizeof(arg) - 2);
 	/*allocate size where the string will be saved*/
-
+	if (newstring == NULL)
+	{
+		return(NULL);
+	}
 	*newstring = *c;
 	/*put format to newstring to allow being edited*/
 
@@ -82,4 +87,11 @@ char *add_char(const char *c,char *specifier, char *arg)
 		}
 	}
 	return (newstring);
+	free(newstring);
+	*newstring = '\0';
+}
+int main(void)
+{
+	_printf("String:[%s]\n", "I am a string !");
+	return 0;
 }
