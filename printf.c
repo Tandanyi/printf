@@ -16,7 +16,7 @@ int _printf(const char *format, ...)
 	{
 		if(format[i] == '%')
 		{
-			converter(format[++i])(args);
+			converter(format + ++i)(arg);
 		}
 		else
 		{
