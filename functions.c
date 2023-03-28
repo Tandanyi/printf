@@ -16,8 +16,8 @@ int print_char(va_list types, char buffer[], int flags,
 		int width, int precision, int size)
 {
 	char c = va_arg(types, int);
+	return (handle_write_char(c, buffer, flags, width, precision, size));
 
-	return (handle_write-char(c, buffer, flags, width, precision, size));
 }
 /***PRINT A STRING***/
 
@@ -123,7 +123,7 @@ int print_int(va_list types, char buffer[], int flags,
 
 	if (n == 0)
 		buffer[i--] = '0';
-	buffer[BUFF_SIZE - 1] = '\0'
+	buffer[BUFF_SIZE - 1] = '\0';
 		num = (unsigned long int)n;
 	if (n < 0)
 	{
@@ -137,7 +137,7 @@ int print_int(va_list types, char buffer[], int flags,
 	}
 	i++;
 
-	return (write_numbers(is_negative, i, buffer, flags, width, precision,
+	return (write_number(is_negative, i, buffer, flags, width, precision,
 				size));
 }
 
